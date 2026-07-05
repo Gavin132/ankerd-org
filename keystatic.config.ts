@@ -67,7 +67,7 @@ export default config({
 					label: 'Exposure Settings',
 					description: 'e.g. f/2.8 · 1/250s · ISO 400',
 				}),
-				caption: fields.markdoc({ label: 'Caption' }),
+				caption: fields.mdx({ label: 'Caption', extension: 'md' }),
 			},
 		}),
 	},
