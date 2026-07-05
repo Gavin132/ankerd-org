@@ -1,170 +1,179 @@
 ---
-import { SITE_TITLE, SOCIAL_LINKS } from '../consts';
-import HeaderLink from './HeaderLink.astro';
-import Logo from './Logo.astro';
-import ThemeToggle from './ThemeToggle.astro';
+import { SITE_TITLE, SOCIAL_LINKS } from "../consts";
+import HeaderLink from "./HeaderLink.astro";
+import Logo from "./Logo.astro";
 ---
 
+<!-- Desktop sidebar -->
 <aside class="sidebar">
-	<div class="sidebar-top">
-		<a href="/" class="logo-link" aria-label={`${SITE_TITLE} — home`}>
-			<Logo class="logo" />
-		</a>
-		<div class="mobile-controls">
-			<ThemeToggle />
-			<button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="site-nav">
-				<svg
-					viewBox="0 0 24 24"
-					width="22"
-					height="22"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					aria-hidden="true"
-				>
-					<line x1="3" y1="6" x2="21" y2="6"></line>
-					<line x1="3" y1="12" x2="21" y2="12"></line>
-					<line x1="3" y1="18" x2="21" y2="18"></line>
-				</svg>
-			</button>
-		</div>
-	</div>
-	<nav id="site-nav">
-		<HeaderLink href="/">Home</HeaderLink>
-		<HeaderLink href="/blog">Blog</HeaderLink>
-		<HeaderLink href="/videos">Videos</HeaderLink>
-		<HeaderLink href="/gallery">Gallery</HeaderLink>
-		<HeaderLink href="/about">About</HeaderLink>
-	</nav>
-	<div class="sidebar-bottom">
-		<ThemeToggle />
-		<div class="social-links">
-			{
-				SOCIAL_LINKS.map(({ label, href }) => (
-					<a href={href} target="_blank" rel="noopener">
-						{label}
-					</a>
-				))
-			}
-		</div>
-	</div>
+    <div class="sidebar-top">
+        <a href="/" class="logo-link" aria-label={`${SITE_TITLE} — home`}>
+            <Logo class="logo" />
+        </a>
+    </div>
+    <nav>
+        <HeaderLink href="/">Home</HeaderLink>
+        <HeaderLink href="/videos">Videos</HeaderLink>
+        <HeaderLink href="/gallery">Gallery</HeaderLink>
+        <HeaderLink href="/blog">Blog</HeaderLink>
+    </nav>
+    <div class="sidebar-bottom">
+        <div class="social-links">
+            {
+                SOCIAL_LINKS.map(({ label, href }) => (
+                    <a href={href} target="_blank" rel="noopener">
+                        {label}
+                    </a>
+                ))
+            }
+        </div>
+    </div>
 </aside>
 
-<style>
-	.sidebar {
-		width: var(--sidebar-width);
-		flex-shrink: 0;
-		position: sticky;
-		top: 0;
-		height: 100vh;
-		box-sizing: border-box;
-		display: flex;
-		flex-direction: column;
-		gap: 2em;
-		padding: 1.5em 1.25em;
-		background: var(--bg-alt);
-		border-right: 1px solid var(--border);
-	}
-	.logo-link {
-		display: block;
-	}
-	.logo-link :global(.logo) {
-		width: 130px;
-		height: auto;
-		display: block;
-	}
-	.mobile-controls {
-		display: none;
-	}
-	nav {
-		display: flex;
-		flex-direction: column;
-		gap: 0.25em;
-	}
-	.sidebar-bottom {
-		margin-top: auto;
-		display: flex;
-		flex-direction: column;
-		gap: 1em;
-		align-items: flex-start;
-	}
-	.social-links {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.75em;
-	}
-	.social-links a {
-		color: var(--text-muted);
-		font-size: 0.75em;
-		text-decoration: none;
-	}
-	.social-links a:hover {
-		color: var(--accent);
-	}
+<!-- Mobile bottom nav -->
+<nav class="mobile-nav" aria-label="Main navigation">
+    <a href="/" class="mobile-nav__item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="22" height="22" aria-hidden="true">
+            <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/>
+            <path d="M9 21V12h6v9"/>
+        </svg>
+        <span>Home</span>
+    </a>
+    <a href="/videos" class="mobile-nav__item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="22" height="22" aria-hidden="true">
+            <rect x="2" y="4" width="20" height="16" rx="3"/>
+            <polygon points="10,9 16,12 10,15" fill="currentColor" stroke="none"/>
+        </svg>
+        <span>Videos</span>
+    </a>
+    <a href="/gallery" class="mobile-nav__item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="22" height="22" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="3"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <path d="M21 15l-5-5L5 21"/>
+        </svg>
+        <span>Gallery</span>
+    </a>
+    <a href="/blog" class="mobile-nav__item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="22" height="22" aria-hidden="true">
+            <path d="M4 4h16v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4z"/>
+            <line x1="8" y1="9" x2="16" y2="9"/>
+            <line x1="8" y1="13" x2="13" y2="13"/>
+        </svg>
+        <span>Blog</span>
+    </a>
+</nav>
 
-	@media (max-width: 720px) {
-		.sidebar {
-			width: 100%;
-			height: auto;
-			gap: 0;
-			padding: 0.6em 1em;
-			border-right: none;
-			border-bottom: 1px solid var(--border);
-			z-index: 10;
-		}
-		.sidebar-top {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-		}
-		.logo-link :global(.logo) {
-			width: 100px;
-		}
-		.mobile-controls {
-			display: flex;
-			align-items: center;
-			gap: 0.5em;
-		}
-		.menu-toggle {
-			display: inline-flex;
-			align-items: center;
-			justify-content: center;
-			padding: 0.5em;
-			background: none;
-			border: 1px solid var(--border);
-			border-radius: 8px;
-			color: var(--text-muted);
-			cursor: pointer;
-		}
-		.menu-toggle:hover {
-			color: var(--accent);
-			border-color: var(--accent);
-		}
-		nav {
-			display: none;
-			padding-top: 0.75em;
-		}
-		.sidebar.open nav {
-			display: flex;
-		}
-		.sidebar-bottom {
-			display: none;
-		}
-	}
+<style>
+    /* ── Desktop sidebar ────────────────────────────── */
+    .sidebar {
+        width: var(--sidebar-width);
+        flex-shrink: 0;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        gap: 2em;
+        padding: 1.5em 1.25em;
+        background: var(--bg-alt);
+        border-right: 1px solid var(--border);
+    }
+    .sidebar-top {
+        display: flex;
+        align-items: center;
+    }
+    .logo-link {
+        display: block;
+    }
+    .logo-link :global(.logo) {
+        width: 130px;
+        height: auto;
+        display: block;
+    }
+    .sidebar nav {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25em;
+    }
+    .sidebar-bottom {
+        margin-top: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+        align-items: flex-start;
+    }
+    .social-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75em;
+    }
+    .social-links a {
+        color: var(--text-muted);
+        font-size: 0.75em;
+        text-decoration: none;
+    }
+    .social-links a:hover {
+        color: var(--accent);
+    }
+
+    /* ── Mobile bottom nav ──────────────────────────── */
+    .mobile-nav {
+        display: none;
+    }
+
+    @media (max-width: 720px) {
+        .sidebar {
+            display: none;
+        }
+
+        .mobile-nav {
+            display: flex;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: var(--bg-alt);
+            border-top: 1px solid var(--border);
+            padding: 0 0.5em env(safe-area-inset-bottom, 0);
+        }
+
+        .mobile-nav__item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.2em;
+            padding: 0.6em 0.25em;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.6em;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            transition: color 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .mobile-nav__item:hover,
+        .mobile-nav__item[aria-current="page"] {
+            color: var(--accent);
+        }
+        .mobile-nav__item svg {
+            width: 22px;
+            height: 22px;
+        }
+    }
 </style>
 
 <script>
-	const sidebar = document.querySelector('.sidebar');
-	const menuToggle = document.querySelector('.menu-toggle');
-	menuToggle?.addEventListener('click', () => {
-		const open = sidebar?.classList.toggle('open') ?? false;
-		menuToggle.setAttribute('aria-expanded', String(open));
-	});
-	sidebar?.querySelectorAll('nav a').forEach((link) => {
-		link.addEventListener('click', () => {
-			sidebar.classList.remove('open');
-			menuToggle?.setAttribute('aria-expanded', 'false');
-		});
-	});
+    // Highlight the current page in the mobile bottom nav
+    const path = window.location.pathname;
+    document.querySelectorAll<HTMLAnchorElement>('.mobile-nav__item').forEach((link) => {
+        const href = link.getAttribute('href') ?? '';
+        const active = href === '/' ? path === '/' : path.startsWith(href);
+        if (active) link.setAttribute('aria-current', 'page');
+    });
 </script>

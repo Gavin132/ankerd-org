@@ -1,171 +1,805 @@
 ---
-import { Image } from 'astro:assets';
-import { getCollection } from 'astro:content';
-import FormattedDate from '../components/FormattedDate.astro';
-import VideoCard from '../components/VideoCard.astro';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { getRecentVideos } from '../lib/youtube';
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import FormattedDate from "../components/FormattedDate.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getRecentVideos } from "../lib/youtube";
 
-const posts = (await getCollection('blog'))
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-	.slice(0, 3);
-const photos = (await getCollection('gallery'))
-	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-	.slice(0, 3);
-const videos = (await getRecentVideos())?.slice(0, 3) ?? null;
+const posts = (await getCollection("blog"))
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+    .slice(0, 3);
+const photos = (await getCollection("gallery"))
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+    .slice(0, 5);
+const videos = (await getRecentVideos())?.filter((v) => !v.isShort).slice(0, 1) ?? null;
+
+const [featuredPost, ...morePosts] = posts;
 ---
 
-<BaseLayout>
-	<section class="hero">
-		<h1 class="gradient-text">ankerd</h1>
-		<p class="tagline">Writing, videos, and photography — collected in one place.</p>
-	</section>
+<BaseLayout wide>
+    <!-- ── Hero ─────────────────────────────────────── -->
+    <section class="hero">
+        <div class="hero-image" data-animate>
+            {
+                videos && videos.length > 0 ? (
+                    <a
+                        class="video-thumb-link"
+                        href={videos[0].url}
+                        target="_blank"
+                        rel="noopener"
+                        aria-label={`Watch: ${videos[0].title}`}
+                    >
+                        <Image
+                            src={videos[0].thumbnail}
+                            alt={videos[0].title}
+                            width={640}
+                            height={360}
+                            inferSize
+                            loading="eager"
+                            class="video-thumb-img"
+                        />
+                        <div class="video-thumb-overlay">
+                            <div class="play-circle">
+                                <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28" aria-hidden="true">
+                                    <polygon points="6,3 20,12 6,21" />
+                                </svg>
+                            </div>
+                            <span class="video-thumb-title">{videos[0].title}</span>
+                        </div>
+                    </a>
+                ) : (
+                    <div class="hero-img-placeholder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" width="40" height="40" aria-hidden="true">
+                            <rect x="3" y="3" width="18" height="18" rx="3"/>
+                            <circle cx="8.5" cy="8.5" r="1.5"/>
+                            <path d="M21 15l-5-5L5 21"/>
+                        </svg>
+                        <p>Hero image</p>
+                    </div>
+                )
+            }
+        </div>
 
-	<section>
-		<header>
-			<h2>Latest posts</h2>
-			<a class="view-all" href="/blog">View all →</a>
-		</header>
-		{
-			posts.length > 0 ? (
-				<ul class="posts">
-					{posts.map((post) => (
-						<li>
-							<a href={`/blog/${post.id}/`}>{post.data.title}</a>
-							<span class="date">
-								<FormattedDate date={post.data.pubDate} />
-							</span>
-						</li>
-					))}
-				</ul>
-			) : (
-				<p class="muted">No posts yet.</p>
-			)
-		}
-	</section>
+        <div class="hero-text" data-animate data-delay="2">
+            <h1>A place for writing, film, and photography.</h1>
+            <p class="hero-desc">
+                ankerd is a creative collective capturing stories through words,
+                video, and images. Explore original writing, documentary-style
+                film, and photography from around the world.
+            </p>
+            <div class="hero-ctas">
+                <a href="/blog" class="btn-primary">Read the blog</a>
+                <a href="/gallery" class="btn-ghost">View gallery →</a>
+            </div>
+        </div>
+    </section>
 
-	<section>
-		<header>
-			<h2>Recent videos</h2>
-			<a class="view-all" href="/videos">View all →</a>
-		</header>
-		{
-			videos && videos.length > 0 ? (
-				<div class="video-grid">
-					{videos.map((video) => (
-						<VideoCard video={video} />
-					))}
-				</div>
-			) : (
-				<p class="muted">Videos are coming soon.</p>
-			)
-		}
-	</section>
+    <!-- ── About ────────────────────────────────────── -->
+    <section class="content-section about-section" data-animate>
+        <div class="section-header">
+            <div class="section-label">About ankerd</div>
+        </div>
+        <div class="about-inner">
+            <div class="about-body">
+                <p class="about-lead">ankerd is a creative collective for writing, film, and photography — capturing stories from around the world.</p>
+                <p class="about-text">This is placeholder copy — replace it with your own introduction: who you are, what you make videos about, what you like to photograph, and what people can expect to find here.</p>
+            </div>
+            <div class="about-img-wrap">
+                <div class="about-img-placeholder">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" width="40" height="40" aria-hidden="true">
+                        <rect x="3" y="3" width="18" height="18" rx="3"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <path d="M21 15l-5-5L5 21"/>
+                    </svg>
+                    <p>Your photo here</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-	<section>
-		<header>
-			<h2>From the gallery</h2>
-			<a class="view-all" href="/gallery">View all →</a>
-		</header>
-		{
-			photos.length > 0 ? (
-				<div class="photo-grid">
-					{photos.map((photo) => (
-						<a href="/gallery" aria-label={photo.data.title}>
-							<Image
-								src={photo.data.photo}
-								alt={photo.data.alt}
-								widths={[300, 600]}
-								sizes="(max-width: 720px) 33vw, 230px"
-							/>
-						</a>
-					))}
-				</div>
-			) : (
-				<p class="muted">No photos yet.</p>
-			)
-		}
-	</section>
+    <!-- ── Gallery ───────────────────────────────────── -->
+    <section class="content-section">
+        <div class="section-header" data-animate>
+            <div class="section-label">From the gallery</div>
+            <a class="view-all" href="/gallery">View all →</a>
+        </div>
+
+        {
+            photos.length > 0 ? (
+                <div class="gallery-mosaic">
+                    {photos.map((photo, i) => (
+                        <a
+                            href="/gallery"
+                            class={`mosaic-item mosaic-item--${i}`}
+                            data-animate
+                            data-delay={i + 1}
+                            aria-label={photo.data.title}
+                        >
+                            <Image
+                                src={photo.data.photo}
+                                alt={photo.data.alt}
+                                widths={[400, 800, 1200]}
+                                sizes="(max-width: 720px) 100vw, (min-width: 720px) calc(66vw - 130px), 50vw"
+                                loading={i < 3 ? 'eager' : 'lazy'}
+                            />
+                            <div class="mosaic-overlay">
+                                <span class="mosaic-title">
+                                    {photo.data.title}
+                                </span>
+                                {photo.data.camera && (
+                                    <span class="mosaic-meta">
+                                        {photo.data.camera}
+                                    </span>
+                                )}
+                            </div>
+                        </a>
+                    ))}
+                </div>
+            ) : (
+                <p class="muted">No photos yet.</p>
+            )
+        }
+    </section>
+
+    <!-- ── Blog ──────────────────────────────────────── -->
+    <section class="content-section">
+        <div class="section-header" data-animate>
+            <div class="section-label">Latest from the blog</div>
+            <a class="view-all" href="/blog">View all →</a>
+        </div>
+
+        {
+            posts.length > 0 ? (
+                <div class="blog-layout">
+                    {featuredPost && (
+                        <a
+                            class="blog-feature"
+                            data-animate
+                            href={`/blog/${featuredPost.id}/`}
+                        >
+                            {featuredPost.data.heroImage ? (
+                                <Image
+                                    class="blog-feature__img"
+                                    src={featuredPost.data.heroImage}
+                                    alt={featuredPost.data.title}
+                                    widths={[800, 1400]}
+                                    sizes="(min-width: 720px) calc(100vw - 200px), 100vw"
+                                    loading="lazy"
+                                />
+                            ) : (
+                                <div class="blog-feature__img blog-feature__img--empty" />
+                            )}
+                            <div class="blog-feature__body">
+                                <span class="blog-feature__label">
+                                    Featured
+                                </span>
+                                <h3 class="blog-feature__title">
+                                    {featuredPost.data.title}
+                                </h3>
+                                <p class="blog-feature__desc">
+                                    {featuredPost.data.description}
+                                </p>
+                                <span class="blog-feature__date">
+                                    <FormattedDate
+                                        date={featuredPost.data.pubDate}
+                                    />
+                                </span>
+                            </div>
+                        </a>
+                    )}
+
+                    {morePosts.length > 0 && (
+                        <div class="blog-cards">
+                            {morePosts.map((post, i) => (
+                                <a class="blog-card" href={`/blog/${post.id}/`} data-animate data-delay={i + 1}>
+                                    {post.data.heroImage ? (
+                                        <Image
+                                            class="blog-card__img"
+                                            src={post.data.heroImage}
+                                            alt={post.data.title}
+                                            widths={[400, 700]}
+                                            sizes="(max-width: 640px) 100vw, (min-width: 720px) calc(50vw - 130px), 50vw"
+                                            loading="lazy"
+                                        />
+                                    ) : (
+                                        <div class="blog-card__img blog-card__img--empty" />
+                                    )}
+                                    <div class="blog-card__overlay">
+                                        <h3 class="blog-card__title">
+                                            {post.data.title}
+                                        </h3>
+                                        <span class="blog-card__date">
+                                            <FormattedDate date={post.data.pubDate} />
+                                        </span>
+                                    </div>
+                                </a>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            ) : (
+                <p class="muted">No posts yet.</p>
+            )
+        }
+    </section>
+
 </BaseLayout>
+
 <style>
-	.hero {
-		padding: 0.5em 0 1em;
-	}
-	.hero h1 {
-		font-size: 3.6em;
-		margin-bottom: 0.25rem;
-	}
-	.tagline {
-		color: var(--text-muted);
-		font-size: 1.05em;
-	}
-	section + section {
-		margin-top: 2.5em;
-	}
-	header {
-		display: flex;
-		align-items: baseline;
-		justify-content: space-between;
-		gap: 1em;
-		margin-bottom: 0.75em;
-	}
-	header h2 {
-		font-size: 1.45em;
-		margin: 0;
-	}
-	.view-all {
-		font-size: 0.8em;
-		text-decoration: none;
-		white-space: nowrap;
-	}
-	.muted {
-		color: var(--text-muted);
-		margin: 0;
-	}
-	.posts {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-	}
-	.posts li {
-		display: flex;
-		align-items: baseline;
-		justify-content: space-between;
-		gap: 1em;
-		padding: 0.45em 0;
-		border-bottom: 1px solid var(--border);
-	}
-	.posts a {
-		text-decoration: none;
-	}
-	.posts .date {
-		color: var(--text-muted);
-		font-size: 0.8em;
-		white-space: nowrap;
-	}
-	.video-grid,
-	.photo-grid {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 1em;
-	}
-	.photo-grid img {
-		display: block;
-		width: 100%;
-		aspect-ratio: 1;
-		object-fit: cover;
-		border-radius: 10px;
-		transition: box-shadow 0.2s ease;
-	}
-	.photo-grid a:hover img {
-		box-shadow: var(--shadow);
-	}
-	@media (max-width: 720px) {
-		.video-grid {
-			grid-template-columns: 1fr;
-		}
-		.photo-grid {
-			gap: 0.5em;
-		}
-	}
+    /* ── Hero ───────────────────────────────────────────── */
+    .hero {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4em;
+        align-items: center;
+        padding: 4em 0 5em;
+    }
+    .hero-eyebrow {
+        font-size: 0.7em;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        color: var(--accent);
+        margin: 0 0 0.75em;
+    }
+    .hero h1 {
+        font-size: 2.6em;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+        margin: 0 0 0.6em;
+        background: var(--gradient-brand);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+    .hero-desc {
+        color: var(--text-muted);
+        font-size: 1em;
+        line-height: 1.65;
+        margin: 0 0 1.75em;
+        max-width: 38ch;
+    }
+    .hero-ctas {
+        display: flex;
+        gap: 1em;
+        flex-wrap: wrap;
+    }
+    .btn-primary {
+        display: inline-block;
+        padding: 0.55em 1.4em;
+        background: var(--accent);
+        color: var(--bg);
+        border-radius: 8px;
+        font-size: 0.9em;
+        font-weight: 600;
+        text-decoration: none;
+        transition:
+            background 0.2s ease,
+            transform 0.15s ease;
+    }
+    .btn-primary:hover {
+        background: var(--accent-hover);
+        color: var(--bg);
+        transform: translateY(-1px);
+    }
+    .btn-ghost {
+        display: inline-block;
+        padding: 0.55em 1.4em;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 0.9em;
+        text-decoration: none;
+        color: var(--text-muted);
+        transition:
+            border-color 0.2s ease,
+            color 0.2s ease;
+    }
+    .btn-ghost:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+    }
+    .hero-image {
+        border-radius: 16px;
+        overflow: hidden;
+        aspect-ratio: 16 / 9;
+        background: var(--bg-alt);
+        border: 1px solid var(--border);
+        position: relative;
+    }
+    .video-thumb-link {
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        text-decoration: none;
+    }
+    .video-thumb-img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover;
+        display: block;
+        border-radius: 0;
+        transition: transform 0.4s ease;
+    }
+    .video-thumb-link:hover .video-thumb-img { transform: scale(1.03); }
+    .video-thumb-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .play-circle {
+        width: 68px;
+        height: 68px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.12);
+        border: 2px solid rgba(255,255,255,0.55);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        backdrop-filter: blur(4px);
+        transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+    }
+    .video-thumb-link:hover .play-circle {
+        background: var(--accent);
+        border-color: var(--accent);
+        transform: scale(1.1);
+    }
+    .video-thumb-title {
+        position: absolute;
+        bottom: 1em;
+        left: 1.1em;
+        right: 1.1em;
+        color: #fff;
+        font-size: 0.82em;
+        font-weight: 600;
+        line-height: 1.3;
+        opacity: 0;
+        transform: translateY(4px);
+        transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .video-thumb-link:hover .video-thumb-title { opacity: 1; transform: none; }
+    .hero-img-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75em;
+        color: var(--text-muted);
+        opacity: 0.45;
+    }
+    .hero-img-placeholder p {
+        font-size: 0.8em;
+        margin: 0;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+
+    /* ── Shared section chrome ───────────────────────────── */
+    .content-section {
+        margin-top: 4em;
+        padding-bottom: 2em;
+    }
+    .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1em;
+        margin-bottom: 1.5em;
+    }
+    .section-label {
+        font-size: 0.7em;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--text-muted);
+        position: relative;
+        padding-left: 1.2em;
+    }
+    .section-label::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0.6em;
+        height: 0.6em;
+        border-radius: 50%;
+        background: var(--accent);
+    }
+    .view-all {
+        font-size: 0.8em;
+        text-decoration: none;
+        color: var(--accent);
+        white-space: nowrap;
+        opacity: 0.8;
+        transition: opacity 0.2s;
+    }
+    .view-all:hover {
+        opacity: 1;
+    }
+    .muted {
+        color: var(--text-muted);
+        margin: 0;
+    }
+
+    /* ── Gallery mosaic ─────────────────────────────────── */
+    /*
+     * Layout with ≥3 photos:
+     *   [ Photo 0 — large lead, 4 cols, 2 rows ] [ Photo 1 ]
+     *                                            [ Photo 2 ]
+     * With 5 photos a third row: [ Photo 3 ] [ Photo 4 ]
+     */
+    .gallery-mosaic {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-auto-rows: 240px;
+        gap: 0.6em;
+    }
+    .mosaic-item--0 {
+        grid-column: 1 / 5;
+        grid-row: 1 / 3;
+    }
+    .mosaic-item--1 {
+        grid-column: 5 / 7;
+        grid-row: 1 / 2;
+    }
+    .mosaic-item--2 {
+        grid-column: 5 / 7;
+        grid-row: 2 / 3;
+    }
+    .mosaic-item--3 {
+        grid-column: 1 / 4;
+    }
+    .mosaic-item--4 {
+        grid-column: 4 / 7;
+    }
+
+    .mosaic-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        display: block;
+        background: var(--bg-alt);
+    }
+    .mosaic-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.5s ease;
+    }
+    .mosaic-item:hover img {
+        transform: scale(1.06);
+    }
+
+    .mosaic-overlay {
+        position: absolute;
+        inset: 0;
+        /* always-on subtle gradient; label fades in on hover */
+        background: linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0.6) 0%,
+            rgba(0, 0, 0, 0.1) 40%,
+            transparent 70%
+        );
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 1em 1.1em;
+    }
+    .mosaic-title {
+        color: #fff;
+        font-size: 0.85em;
+        font-weight: 600;
+        line-height: 1.3;
+        opacity: 0;
+        transform: translateY(4px);
+        transition:
+            opacity 0.25s ease,
+            transform 0.25s ease;
+    }
+    .mosaic-meta {
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 0.72em;
+        margin-top: 0.2em;
+        opacity: 0;
+        transform: translateY(4px);
+        transition:
+            opacity 0.25s ease 0.04s,
+            transform 0.25s ease 0.04s;
+    }
+    .mosaic-item:hover .mosaic-title,
+    .mosaic-item:hover .mosaic-meta {
+        opacity: 1;
+        transform: none;
+    }
+
+    /* ── Blog: magazine cover feature + card row ─────────── */
+    .blog-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+    }
+
+    /* Featured: full-width image with text overlay */
+    .blog-feature {
+        position: relative;
+        display: block;
+        border-radius: 16px;
+        overflow: hidden;
+        height: 440px;
+        text-decoration: none;
+        background: var(--bg-alt);
+    }
+    .blog-feature__img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.5s ease;
+    }
+    .blog-feature__img--empty {
+        background: var(--bg-alt);
+    }
+    .blog-feature:hover .blog-feature__img {
+        transform: scale(1.03);
+    }
+    .blog-feature__body {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 2.5em 2em 2em;
+        background: linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0.88) 0%,
+            rgba(0, 0, 0, 0.5) 50%,
+            transparent 100%
+        );
+        display: flex;
+        flex-direction: column;
+        gap: 0.4em;
+    }
+    .blog-feature__label {
+        font-size: 0.65em;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--accent);
+    }
+    .blog-feature__title {
+        font-size: 1.9em;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        color: #fff;
+        margin: 0;
+    }
+    .blog-feature__desc {
+        font-size: 0.9em;
+        color: rgba(255, 255, 255, 0.72);
+        margin: 0.2em 0 0;
+        line-height: 1.5;
+        max-width: 60ch;
+    }
+    .blog-feature__date {
+        font-size: 0.75em;
+        color: rgba(255, 255, 255, 0.5);
+        margin-top: 0.3em;
+    }
+
+    /* Smaller cards: 2-column grid, overlay style */
+    .blog-cards {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8em;
+    }
+    .blog-card {
+        position: relative;
+        display: block;
+        text-decoration: none;
+        border-radius: 12px;
+        overflow: hidden;
+        height: 220px;
+        background: var(--bg-alt);
+    }
+    .blog-card__img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.5s ease;
+        border-radius: 0;
+    }
+    .blog-card__img--empty {
+        background: var(--bg-alt);
+    }
+    .blog-card:hover .blog-card__img {
+        transform: scale(1.04);
+    }
+    .blog-card__overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 1.5em 1.1em 1em;
+        background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.4) 55%, transparent 100%);
+        display: flex;
+        flex-direction: column;
+        gap: 0.25em;
+    }
+    .blog-card__title {
+        font-size: 0.88em;
+        margin: 0;
+        line-height: 1.35;
+        color: #fff;
+        font-weight: 700;
+    }
+    .blog-card__date {
+        font-size: 0.7em;
+        color: rgba(255,255,255,0.55);
+    }
+
+    /* About section */
+    .about-section {
+        padding-top: 1em;
+    }
+    .about-inner {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4em;
+        align-items: center;
+    }
+    .about-body {
+        max-width: 56ch;
+    }
+    .about-lead {
+        font-size: 1.15em;
+        line-height: 1.6;
+        color: var(--text);
+        margin: 0 0 1em;
+        font-weight: 600;
+    }
+    .about-text {
+        font-size: 0.95em;
+        color: var(--text-muted);
+        line-height: 1.7;
+        margin: 0;
+    }
+    .about-img-wrap {
+        border-radius: 16px;
+        overflow: hidden;
+        aspect-ratio: 4 / 3;
+        background: var(--bg-alt);
+        border: 1px solid var(--border);
+    }
+    .about-img-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75em;
+        color: var(--text-muted);
+        opacity: 0.45;
+    }
+    .about-img-placeholder p {
+        font-size: 0.8em;
+        margin: 0;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+
+    /* ── Responsive ─────────────────────────────────────── */
+    @media (max-width: 780px) {
+        .about-inner {
+            grid-template-columns: 1fr;
+            gap: 2em;
+        }
+
+        .hero {
+            grid-template-columns: 1fr;
+            gap: 2em;
+            padding: 2em 0 2.5em;
+            min-height: unset;
+        }
+        .hero h1 {
+            font-size: 2.1em;
+        }
+        .hero-desc {
+            max-width: none;
+        }
+
+        /* Gallery: 3-col equal mosaic */
+        .gallery-mosaic {
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: 220px;
+        }
+        .mosaic-item--0 {
+            grid-column: 1 / 3;
+            grid-row: 1 / 3;
+        }
+        .mosaic-item--1 {
+            grid-column: 3 / 4;
+            grid-row: 1 / 2;
+        }
+        .mosaic-item--2 {
+            grid-column: 3 / 4;
+            grid-row: 2 / 3;
+        }
+        .mosaic-item--3 {
+            grid-column: 1 / 2;
+        }
+        .mosaic-item--4 {
+            grid-column: 2 / 4;
+        }
+
+        .blog-feature {
+            height: 360px;
+        }
+        .blog-feature__title {
+            font-size: 1.5em;
+        }
+    }
+    @media (max-width: 640px) {
+        .hero h1 {
+            font-size: 1.8em;
+        }
+
+        .gallery-mosaic {
+            grid-template-columns: 1fr 1fr;
+            grid-auto-rows: 180px;
+        }
+        .mosaic-item--0 {
+            grid-column: 1 / 3;
+            grid-row: 1 / 2;
+        }
+        .mosaic-item--1 {
+            grid-column: 1 / 2;
+            grid-row: auto;
+        }
+        .mosaic-item--2 {
+            grid-column: 2 / 3;
+            grid-row: auto;
+        }
+        .mosaic-item--3 {
+            grid-column: 1 / 2;
+            grid-row: auto;
+        }
+        .mosaic-item--4 {
+            grid-column: 2 / 3;
+            grid-row: auto;
+        }
+        .mosaic-title,
+        .mosaic-meta {
+            opacity: 1;
+            transform: none;
+        }
+
+        .blog-feature {
+            height: 300px;
+        }
+        .blog-feature__title {
+            font-size: 1.3em;
+        }
+        .blog-feature__desc {
+            display: none;
+        }
+        .blog-cards {
+            grid-template-columns: 1fr;
+        }
+        .blog-card {
+            height: 180px;
+        }
+    }
 </style>

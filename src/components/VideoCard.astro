@@ -1,48 +1,113 @@
 ---
+import { Image } from 'astro:assets';
 import type { Video } from '../lib/youtube';
 import FormattedDate from './FormattedDate.astro';
 
 interface Props {
 	video: Video;
+	short?: boolean;
+	loading?: 'eager' | 'lazy';
 }
 
-const { video } = Astro.props;
+const { video, short = false, loading = 'lazy' } = Astro.props;
 ---
 
-<a class="video-card" href={video.url} target="_blank" rel="noopener">
-	<img src={video.thumbnail} alt="" loading="lazy" width="480" height="270" />
-	<h3 class="title">{video.title}</h3>
+<a class:list={['video-card', { short }]} href={video.url} target="_blank" rel="noopener">
+	<div class="thumb-wrap">
+		<Image
+			src={video.thumbnail}
+			alt={video.title}
+			width={640}
+			height={360}
+			inferSize
+			loading={loading}
+			class="thumb-img"
+		/>
+		<div class="thumb-overlay">
+			<div class="play-circle">
+				<svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28" aria-hidden="true">
+					<polygon points="6,3 20,12 6,21" />
+				</svg>
+			</div>
+			<span class="thumb-title">{video.title}</span>
+		</div>
+	</div>
 	<p class="date"><FormattedDate date={video.publishedAt} /></p>
 </a>
 
 <style>
 	.video-card {
 		display: block;
-		color: var(--text);
 		text-decoration: none;
+		color: var(--text);
 	}
-	.video-card img {
-		display: block;
-		width: 100%;
+	.thumb-wrap {
+		position: relative;
+		border-radius: 14px;
+		overflow: hidden;
 		aspect-ratio: 16 / 9;
+		background: var(--bg-alt);
+		border: 1px solid var(--border);
+	}
+	.short .thumb-wrap {
+		aspect-ratio: 9 / 16;
+	}
+	.thumb-img {
+		width: 100% !important;
+		height: 100% !important;
 		object-fit: cover;
-		border-radius: 12px;
-		transition: box-shadow 0.2s ease;
+		display: block;
+		border-radius: 0;
+		transition: transform 0.4s ease;
 	}
-	.video-card:hover img {
-		box-shadow: var(--shadow);
+	.video-card:hover .thumb-img { transform: scale(1.04); }
+
+	.thumb-overlay {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%);
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
-	.title {
-		margin: 0.5rem 0 0.15rem;
-		font-size: 1em;
+	.play-circle {
+		width: 60px;
+		height: 60px;
+		border-radius: 50%;
+		background: rgba(255,255,255,0.12);
+		border: 2px solid rgba(255,255,255,0.55);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: #fff;
+		backdrop-filter: blur(4px);
+		transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+	}
+	.video-card:hover .play-circle {
+		background: var(--accent);
+		border-color: var(--accent);
+		transform: scale(1.1);
+	}
+	.thumb-title {
+		position: absolute;
+		bottom: 0.9em;
+		left: 1em;
+		right: 1em;
+		color: #fff;
+		font-size: 0.82em;
+		font-weight: 600;
 		line-height: 1.3;
+		opacity: 0;
+		transform: translateY(4px);
+		transition: opacity 0.2s ease, transform 0.2s ease;
 	}
-	.video-card:hover .title {
-		color: var(--accent);
+	.video-card:hover .thumb-title {
+		opacity: 1;
+		transform: none;
 	}
 	.date {
-		margin: 0;
+		margin: 0.5em 0 0;
 		color: var(--text-muted);
-		font-size: 0.8em;
+		font-size: 0.78em;
 	}
 </style>

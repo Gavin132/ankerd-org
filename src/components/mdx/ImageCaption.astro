@@ -1,0 +1,32 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
+const { src, alt, caption } = Astro.props;
+---
+
+<figure class="image-caption">
+  <!-- src is an arbitrary URL from MDX content; can't use <Image> here -->
+  <img src={src} alt={alt} loading="lazy" decoding="async" style="max-width:100%;height:auto" />
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .image-caption {
+    margin: 1.5rem 0;
+    text-align: center;
+  }
+  .image-caption img {
+    max-width: 100%;
+    border-radius: 8px;
+  }
+  .image-caption figcaption {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+</style>

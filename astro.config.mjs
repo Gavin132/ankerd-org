@@ -17,6 +17,9 @@ export default defineConfig({
 	site: 'https://ankerd.org',
 	...(isCloudflarePages && { adapter: cloudflare() }),
 	integrations: [mdx(), sitemap(), react(), keystatic()],
+	image: {
+		remotePatterns: [{ hostname: 'i.ytimg.com' }],
+	},
 	fonts: [
 		{
 			provider: fontProviders.local(),

@@ -5,9 +5,10 @@ import FormattedDate from './FormattedDate.astro';
 
 interface Props {
 	entry: CollectionEntry<'gallery'>;
+	loading?: 'eager' | 'lazy';
 }
 
-const { entry } = Astro.props;
+const { entry, loading = 'lazy' } = Astro.props;
 const { title, description, date, photo, alt, camera, lens, settings } = entry.data;
 
 // Larger rendition for the lightbox, passed via data attribute.
@@ -23,7 +24,13 @@ const meta = [camera, lens, settings].filter(Boolean).join(' · ');
 	data-meta={meta}
 	data-alt={alt}
 >
-	<Image src={photo} alt={alt} widths={[400, 800]} sizes="(max-width: 720px) 100vw, 400px" />
+	<Image
+		src={photo}
+		alt={alt}
+		widths={[400, 800, 1200]}
+		sizes="(max-width: 640px) 100vw, (min-width: 720px) calc(25vw - 2em), 50vw"
+		loading={loading}
+	/>
 	<span class="caption">
 		<span class="title">{title}</span>
 		<span class="date"><FormattedDate date={date} /></span>

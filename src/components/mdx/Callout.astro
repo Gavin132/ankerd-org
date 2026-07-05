@@ -1,0 +1,50 @@
+---
+interface Props {
+  type?: 'info' | 'tip' | 'warning' | 'danger';
+  title?: string;
+}
+
+const { type = 'info', title } = Astro.props;
+
+const icons = {
+  info: 'ℹ️',
+  tip: '💡',
+  warning: '⚠️',
+  danger: '🚨',
+};
+---
+
+<aside class={`callout callout-${type}`}>
+  <p class="callout-title">
+    <span class="callout-icon">{icons[type]}</span>
+    {title ?? type.charAt(0).toUpperCase() + type.slice(1)}
+  </p>
+  <slot />
+</aside>
+
+<style>
+  .callout {
+    border-left: 4px solid;
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+  }
+  .callout-title {
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-transform: capitalize;
+  }
+  .callout-icon { font-style: normal; }
+  .callout-info    { border-color: #3b82f6; background: #eff6ff; color: #1e3a5f; }
+  .callout-tip     { border-color: #22c55e; background: #f0fdf4; color: #14532d; }
+  .callout-warning { border-color: #f59e0b; background: #fffbeb; color: #78350f; }
+  .callout-danger  { border-color: #ef4444; background: #fef2f2; color: #7f1d1d; }
+
+  :global([data-theme='dark']) .callout-info    { background: #1e3a5f33; color: #93c5fd; }
+  :global([data-theme='dark']) .callout-tip     { background: #14532d33; color: #86efac; }
+  :global([data-theme='dark']) .callout-warning { background: #78350f33; color: #fcd34d; }
+  :global([data-theme='dark']) .callout-danger  { background: #7f1d1d33; color: #fca5a5; }
+</style>

@@ -42,16 +42,18 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		padding: 0.5em;
+		padding: 0.35em;
 		background: none;
-		border: 1px solid var(--border);
-		border-radius: 8px;
+		border: none;
+		border-radius: 6px;
 		color: var(--text-muted);
+		opacity: 0.45;
 		cursor: pointer;
+		transition: opacity 0.2s ease, color 0.2s ease;
 	}
 	.theme-toggle:hover {
 		color: var(--accent);
-		border-color: var(--accent);
+		opacity: 1;
 	}
 	.sun {
 		display: none;

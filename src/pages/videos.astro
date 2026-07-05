@@ -4,7 +4,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE_TITLE } from '../consts';
 import { getRecentVideos } from '../lib/youtube';
 
-const videos = await getRecentVideos();
+const allVideos = await getRecentVideos();
+const videos = allVideos?.filter((v) => !v.isShort) ?? null;
+const shorts = allVideos?.filter((v) => v.isShort) ?? [];
 ---
 
 <BaseLayout title={`Videos — ${SITE_TITLE}`} description="Recent YouTube uploads by ankerd." wide>
@@ -12,8 +14,8 @@ const videos = await getRecentVideos();
 	{
 		videos && videos.length > 0 ? (
 			<div class="grid">
-				{videos.map((video) => (
-					<VideoCard video={video} />
+				{videos.map((video, i) => (
+					<VideoCard video={video} loading={i < 6 ? 'eager' : 'lazy'} />
 				))}
 			</div>
 		) : (
@@ -28,7 +30,23 @@ const videos = await getRecentVideos();
 			</div>
 		)
 	}
+
+	{
+		shorts.length > 0 && (
+			<section class="shorts-section">
+				<div class="section-header">
+					<div class="section-label">Shorts</div>
+				</div>
+				<div class="shorts-grid">
+					{shorts.map((video) => (
+						<VideoCard video={video} short />
+					))}
+				</div>
+			</section>
+		)
+	}
 </BaseLayout>
+
 <style>
 	h1 {
 		font-size: 2.441em;
@@ -52,5 +70,38 @@ const videos = await getRecentVideos();
 	.dev-note {
 		margin-top: 0.75em !important;
 		font-size: 0.8em;
+	}
+
+	.shorts-section {
+		margin-top: 3.5em;
+	}
+	.section-header {
+		margin-bottom: 1.25em;
+	}
+	.section-label {
+		font-size: 0.7em;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: var(--text-muted);
+		position: relative;
+		padding-left: 1.2em;
+	}
+	.section-label::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 0.6em;
+		height: 0.6em;
+		border-radius: 50%;
+		background: var(--accent);
+	}
+	/* Shorts are vertical (9:16), so narrower cards */
+	.shorts-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+		gap: 1.25em 1em;
 	}
 </style>

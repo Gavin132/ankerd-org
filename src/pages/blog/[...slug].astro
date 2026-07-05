@@ -1,6 +1,9 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
+import Callout from '../../components/mdx/Callout.astro';
+import YouTube from '../../components/mdx/YouTube.astro';
+import ImageCaption from '../../components/mdx/ImageCaption.astro';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('blog');
@@ -16,5 +19,5 @@ const { Content } = await render(post);
 ---
 
 <BlogPost {...post.data}>
-	<Content />
+	<Content components={{ Callout, YouTube, ImageCaption }} />
 </BlogPost>
