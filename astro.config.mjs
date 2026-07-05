@@ -2,13 +2,21 @@
 
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import react from '@astrojs/react';
+import keystatic from '@keystatic/astro';
+import cloudflare from '@astrojs/cloudflare';
 import { defineConfig, fontProviders } from 'astro/config';
+
+// Only use the Cloudflare adapter during production builds (CF_PAGES=1 is set by Cloudflare Pages).
+// In dev, Astro handles SSR natively in Node.js, which is needed for Keystatic.
+const isCloudflarePages = Boolean(process.env.CF_PAGES);
 
 // https://astro.build/config
 export default defineConfig({
 	// TODO: replace with the real production domain
 	site: 'https://ankerd.org',
-	integrations: [mdx(), sitemap()],
+	...(isCloudflarePages && { adapter: cloudflare() }),
+	integrations: [mdx(), sitemap(), react(), keystatic()],
 	fonts: [
 		{
 			provider: fontProviders.local(),
