@@ -17,4 +17,22 @@ const blog = defineCollection({
 		}),
 });
 
-export const collections = { blog };
+const gallery = defineCollection({
+	// One markdown file per photo in `src/content/gallery/`;
+	// put the image files in `src/assets/gallery/` and reference them relatively.
+	loader: glob({ base: './src/content/gallery', pattern: '**/*.{md,mdx}' }),
+	schema: ({ image }) =>
+		z.object({
+			title: z.string(),
+			description: z.string().optional(),
+			date: z.coerce.date(),
+			photo: image(),
+			alt: z.string().default(''),
+			camera: z.string().optional(),
+			lens: z.string().optional(),
+			// Free-form exposure info, e.g. "f/2.8 · 1/250s · ISO 400"
+			settings: z.string().optional(),
+		}),
+});
+
+export const collections = { blog, gallery };

@@ -1,63 +1,65 @@
-# Astro Starter Kit: Blog
+# ankerd
+
+Personal site built with [Astro](https://astro.build): blog posts, recent YouTube uploads, and a photo gallery — with light/dark themes around a cyan→teal brand gradient.
+
+## Setup
 
 ```sh
-pnpm create astro@latest -- --template blog
+pnpm install
+pnpm dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Configuration
 
-Features:
+- **Site title / description / social links**: `src/consts.ts`
+- **Production domain**: `site` in `astro.config.mjs`
+- **Logo**: `src/components/Logo.astro` is a placeholder gradient wordmark — swap in the real logo SVG there.
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and Open Graph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+### YouTube videos (`/videos`)
 
-## 🚀 Project Structure
+Recent uploads are fetched at build time from the YouTube Data API v3:
 
-Inside of your Astro project, you'll see the following folders and files:
+1. Copy `.env.example` to `.env` and set `YOUTUBE_API_KEY` (create a key in the [Google Cloud console](https://console.cloud.google.com/apis/credentials) with "YouTube Data API v3" enabled).
+2. Set `YOUTUBE_CHANNEL_ID` in `src/consts.ts` (starts with `UC…`).
 
-```text
-├── public/
-├── src/
-│   ├── assets/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+Without these, the build still succeeds and the page shows a "coming soon" state. Videos refresh on each rebuild.
+
+### Gallery (`/gallery`)
+
+One markdown file per photo in `src/content/gallery/`, image files in `src/assets/gallery/`:
+
+```markdown
+---
+title: 'Harbor at dusk'
+description: 'Optional longer description shown in the lightbox.'
+date: '2026-07-01'
+photo: '../../assets/gallery/harbor-at-dusk.jpg'
+alt: 'A harbor at dusk'
+camera: 'Fujifilm X-T5'      # optional
+lens: 'XF 35mm f/1.4'        # optional
+settings: 'f/2.8 · 1/250s · ISO 400'  # optional
+---
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Delete the `sample-photo-*.md` entries once real photos are added.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+### Blog (`/blog`)
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+Markdown/MDX files in `src/content/blog/` (frontmatter: `title`, `description`, `pubDate`, optional `updatedDate` / `heroImage`). An RSS feed is generated at `/rss.xml`.
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Theming
 
-## 🧞 Commands
+Design tokens live in `src/styles/global.css` — light theme in `:root`, dark overrides under `[data-theme='dark']`. The theme follows the visitor's OS preference by default; the sidebar toggle overrides it and persists in `localStorage`.
 
-All commands are run from the root of the project, from a terminal:
+## Commands
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+| Command        | Action                                       |
+| :------------- | :------------------------------------------- |
+| `pnpm install` | Install dependencies                         |
+| `pnpm dev`     | Start local dev server at `localhost:4321`   |
+| `pnpm build`   | Build the production site to `./dist/`       |
+| `pnpm preview` | Preview the build locally before deploying   |
 
 ## Credit
 
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+Based on the Astro blog starter, which is based on [Bear Blog](https://github.com/HermanMartinus/bearblog/).

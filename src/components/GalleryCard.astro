@@ -1,0 +1,73 @@
+---
+import { Image, getImage } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+
+interface Props {
+	entry: CollectionEntry<'gallery'>;
+}
+
+const { entry } = Astro.props;
+const { title, description, date, photo, alt, camera, lens, settings } = entry.data;
+
+// Larger rendition for the lightbox, passed via data attribute.
+const fullSize = await getImage({ src: photo, width: 1600 });
+const meta = [camera, lens, settings].filter(Boolean).join(' · ');
+---
+
+<button
+	class="gallery-card"
+	data-full={fullSize.src}
+	data-title={title}
+	data-description={description ?? ''}
+	data-meta={meta}
+	data-alt={alt}
+>
+	<Image src={photo} alt={alt} widths={[400, 800]} sizes="(max-width: 720px) 100vw, 400px" />
+	<span class="caption">
+		<span class="title">{title}</span>
+		<span class="date"><FormattedDate date={date} /></span>
+	</span>
+</button>
+
+<style>
+	.gallery-card {
+		display: block;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		background: none;
+		border: none;
+		font: inherit;
+		text-align: left;
+		color: var(--text);
+		cursor: zoom-in;
+	}
+	.gallery-card img {
+		display: block;
+		width: 100%;
+		aspect-ratio: 4 / 3;
+		object-fit: cover;
+		border-radius: 12px;
+		transition: box-shadow 0.2s ease;
+	}
+	.gallery-card:hover img {
+		box-shadow: var(--shadow);
+	}
+	.caption {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1em;
+		padding: 0.4em 0.2em 0;
+	}
+	.title {
+		font-weight: 700;
+		font-size: 0.9em;
+	}
+	.date {
+		color: var(--text-muted);
+		font-size: 0.75em;
+		white-space: nowrap;
+	}
+</style>

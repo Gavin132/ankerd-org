@@ -1,0 +1,33 @@
+---
+import type { ImageMetadata } from 'astro';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Sidebar from '../components/Sidebar.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+interface Props {
+	title?: string;
+	description?: string;
+	image?: ImageMetadata;
+	/** Widens main from 720px to 1100px — for grid pages (gallery, videos). */
+	wide?: boolean;
+}
+
+const { title = SITE_TITLE, description = SITE_DESCRIPTION, image, wide = false } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} image={image} />
+	</head>
+	<body>
+		<Sidebar />
+		<div class="page">
+			<main class:list={[{ wide }]}>
+				<slot />
+			</main>
+			<Footer />
+		</div>
+	</body>
+</html>
