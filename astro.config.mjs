@@ -5,6 +5,7 @@ import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
 import keystatic from '@keystatic/astro';
 import cloudflare from '@astrojs/cloudflare';
+import icon from 'astro-icon';
 import { defineConfig, fontProviders } from 'astro/config';
 
 // Only use the Cloudflare adapter during production builds (CF_PAGES=1 is set by Cloudflare Pages).
@@ -16,7 +17,7 @@ export default defineConfig({
 	// TODO: replace with the real production domain
 	site: 'https://ankerd.org',
 	...(isCloudflarePages && { adapter: cloudflare() }),
-	integrations: [mdx(), sitemap(), react(), keystatic()],
+	integrations: [mdx(), sitemap(), react(), keystatic(), icon()],
 	image: {
 		remotePatterns: [{ hostname: 'i.ytimg.com' }],
 	},

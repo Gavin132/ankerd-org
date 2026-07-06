@@ -10,14 +10,12 @@
     --brand-2: #38BDF8;
     --brand-3: #7DD3FC;
     --brand-4: #BAE6FD;
-    --brand-5: #38BDF8;
     --gradient-brand: linear-gradient(
         135deg,
         var(--brand-1),
         var(--brand-2),
         var(--brand-3),
-        var(--brand-4),
-        var(--brand-5)
+        var(--brand-4)
     );
 
     --sidebar-width: 200px;

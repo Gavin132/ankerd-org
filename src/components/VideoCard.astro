@@ -1,4 +1,5 @@
 ---
+import { Icon } from 'astro-icon/components';
 import { Image } from 'astro:assets';
 import type { Video } from '../lib/youtube';
 import FormattedDate from './FormattedDate.astro';
@@ -25,9 +26,7 @@ const { video, short = false, loading = 'lazy' } = Astro.props;
 		/>
 		<div class="thumb-overlay">
 			<div class="play-circle">
-				<svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28" aria-hidden="true">
-					<polygon points="6,3 20,12 6,21" />
-				</svg>
+				<Icon name="lucide:play" width="24" height="24" aria-hidden="true" />
 			</div>
 			<span class="thumb-title">{video.title}</span>
 		</div>
