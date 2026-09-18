@@ -21,14 +21,14 @@ const photosFull = await Promise.all(
 );
 ---
 
-<BaseLayout title={`Gallery — ${SITE_TITLE}`} description="Photography by ankerd." wide>
+<BaseLayout title={`Gallery — ${SITE_TITLE}`} description="3D renders by ankerd." wide>
 	<div class="gallery-header" data-animate>
 		<h1>Gallery</h1>
 		<div class="layout-toggle" role="group" aria-label="Gallery layout">
-			<button class="layout-btn" data-layout="grid" title="Grid view" aria-pressed="false">
+			<button class="layout-btn active" data-layout="grid" title="Grid view" aria-pressed="true">
 				<Icon name="lucide:layout-grid" width="16" height="16" aria-hidden="true" />
 			</button>
-			<button class="layout-btn active" data-layout="stack" title="Editorial view" aria-pressed="true">
+			<button class="layout-btn" data-layout="stack" title="Editorial view" aria-pressed="false">
 				<Icon name="lucide:rows-2" width="16" height="16" aria-hidden="true" />
 			</button>
 		</div>
@@ -37,7 +37,7 @@ const photosFull = await Promise.all(
 	{photos.length > 0 ? (
 		<>
 			{/* Stack / editorial alternating layout */}
-			<div class="stack-layout" id="stack-layout">
+			<div class="stack-layout hidden" id="stack-layout">
 				{photosFull.map(({ entry, fullSrc, meta }, i) => (
 					<button
 						class="stack-item"
@@ -55,7 +55,7 @@ const photosFull = await Promise.all(
 								src={entry.data.photo}
 								alt={entry.data.alt}
 								widths={[800, 1200, 1600]}
-								sizes="(max-width: 720px) 100vw, (min-width: 720px) calc(65vw - 130px), 65vw"
+								sizes="(max-width: 720px) 100vw, 42vw"
 								loading={i < 2 ? 'eager' : 'lazy'}
 							/>
 						</div>
@@ -70,7 +70,7 @@ const photosFull = await Promise.all(
 			</div>
 
 			{/* Grid layout */}
-			<div class="grid-layout hidden" id="grid-layout">
+			<div class="grid-layout" id="grid-layout">
 				{photos.map((entry, i) => (
 					<div class="gallery-item" data-animate data-delay={Math.min(i + 1, 5)}>
 						<GalleryCard entry={entry} loading={i < 4 ? 'eager' : 'lazy'} />
@@ -147,7 +147,7 @@ const photosFull = await Promise.all(
 		width: 100%;
 		background: none;
 		border: none;
-		padding: 3em 0;
+		padding: 1.5em 0;
 		cursor: zoom-in;
 		text-align: left;
 		color: var(--text);
@@ -156,7 +156,8 @@ const photosFull = await Promise.all(
 	.stack-item:first-child { border-top: none; }
 
 	.stack-img {
-		flex: 0 0 65%;
+		flex: 0 0 42%;
+		aspect-ratio: 16 / 10;
 		overflow: hidden;
 		border-radius: 14px;
 		position: relative;
@@ -184,7 +185,8 @@ const photosFull = await Promise.all(
 
 	.stack-info {
 		flex: 1;
-		padding: 2.5em 3em;
+		padding: 1em 2em;
+		justify-content: center;
 		display: flex;
 		flex-direction: column;
 		gap: 0.5em;
@@ -218,7 +220,7 @@ const photosFull = await Promise.all(
 	/* ── Grid layout ──────────────────────────────── */
 	.grid-layout {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 		gap: 1.25em;
 	}
 	.hidden { display: none !important; }
@@ -285,11 +287,11 @@ const photosFull = await Promise.all(
 			b.classList.toggle('active', isActive);
 			b.setAttribute('aria-pressed', String(isActive));
 		});
-		localStorage.setItem('gallery-layout', layout);
+		localStorage.setItem('gallery-layout-v2', layout);
 	}
 
-	const savedLayout = (localStorage.getItem('gallery-layout') ?? 'stack') as 'grid' | 'stack';
-	if (savedLayout !== 'stack') setLayout(savedLayout);
+	const savedLayout = (localStorage.getItem('gallery-layout-v2') ?? 'grid') as 'grid' | 'stack';
+	if (savedLayout !== 'grid') setLayout(savedLayout);
 
 	btns.forEach((btn) => {
 		btn.addEventListener('click', () => setLayout(btn.dataset.layout as 'grid' | 'stack'));

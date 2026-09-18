@@ -15,7 +15,9 @@ const shorts = allVideos?.filter((v) => v.isShort) ?? [];
 		videos && videos.length > 0 ? (
 			<div class="grid">
 				{videos.map((video, i) => (
-					<VideoCard video={video} loading={i < 6 ? 'eager' : 'lazy'} />
+					<div class:list={{ featured: i === 0 }}>
+						<VideoCard video={video} loading={i < 6 ? 'eager' : 'lazy'} />
+					</div>
 				))}
 			</div>
 		) : (
@@ -55,6 +57,17 @@ const shorts = allVideos?.filter((v) => v.isShort) ?? [];
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 		gap: 1.5em 1.25em;
+	}
+	/* Newest video fills a 2x2 block of tiles */
+	.featured {
+		grid-column: span 2;
+		grid-row: span 2;
+	}
+	@media (max-width: 640px) {
+		.featured {
+			grid-column: auto;
+			grid-row: auto;
+		}
 	}
 	.empty {
 		padding: 2em;

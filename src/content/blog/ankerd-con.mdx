@@ -1,0 +1,42 @@
+---
+title: 'Ankerd Con: our own app for convention trips'
+description: 'Rides, meals, hotel rooms and expenses for every convention, in one app at con.ankerd.org.'
+pubDate: '2026-09-18'
+heroImage: '../../assets/members.webp'
+---
+
+Going to a convention with a big group is fun. Organising it is a different story. Who drives, who still has no ride back, who booked which hotel room, and who owes who twenty euros for dinner? For a long time the answer lived in a Discord chat and a few very long threads.
+
+So we built an app for it: **Ankerd Con**, live at [con.ankerd.org](https://con.ankerd.org).
+
+It's a private app for the ankerd group. You sign in with Discord, and only people on the crew list get in. That's why you won't find a public demo, but here is what it does.
+
+## A page for every trip
+
+Everything is organised around trips. Open the current trip and you get one overview with a tile for each part of it:
+
+- **Vervoer (transport):** offer seats, join a ride, and see at a glance who still has no ride back. There are separate lists for the way there, the way back and restaurant runs.
+- **Eten (food):** plan meals, and see who's joining and what it costs.
+- **Kamers (rooms):** hotel info and the room assignments, including how many people still need a room.
+- **Cosplay:** a place for the cosplay side of the trip.
+- **Foto's (photos):** everyone adds their pictures to the story of the trip.
+- **Uitgaven (expenses):** shared costs, linked to the trip.
+
+The tiles reorder depending on whether the trip is coming up, happening now, or over. Before a trip they show the plans first. Afterwards it's photos and what you still owe.
+
+## The rest of the app
+
+- **Hub:** your next trip as a ticket with a countdown, plus a "Voor jou" list of everything you still need to arrange.
+- **Agenda:** upcoming trips as a stack of tickets. Tap "Ik ga mee" to sign up for every day of a trip at once. Past trips turn into a look-back with who went, the photos, and how many cons you've been to.
+- **Financiën:** shared expenses split between everyone, with your balance next to the list.
+- **Crew:** the member list, plus a "Waar is iedereen" view so you can find each other on the con floor.
+
+It works on your phone like a normal app (it's a PWA you can install to your home screen), and on desktop it moves the navigation to a sidebar.
+
+## How it's built
+
+For the nerds: the frontend is React with TypeScript and Vite, the backend is a Python FastAPI service, and Supabase provides the database and Discord login. It has an admin portal for managing trips, users and badges, and it talks to our Discord bot.
+
+The design is based on the ankerd anchor mascot, with flat surfaces, ink outlines and Poppins for the text. Yes, the same font as this website.
+
+It started in June 2026 and it's still growing. The to-do list includes Google Calendar sync, notifications through the Discord bot and automatic expense tracking. If you're in the group and something's missing, tell us.

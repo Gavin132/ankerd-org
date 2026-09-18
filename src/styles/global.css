@@ -56,7 +56,7 @@
 }
 
 body {
-    font-family: var(--font-atkinson);
+    font-family: var(--font-poppins);
     margin: 0;
     padding: 0;
     display: flex;
