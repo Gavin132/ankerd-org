@@ -52,7 +52,7 @@ const [featured, ...rest] = posts;
 									alt={post.data.title}
 									widths={[400, 800]}
 									sizes="(max-width: 640px) 100vw, (min-width: 720px) calc(25vw - 2em), 50vw"
-									loading="lazy"
+									loading={i < 2 ? 'eager' : 'lazy'}
 								/>
 							) : (
 								<div class="post-card__img post-card__img--empty" />

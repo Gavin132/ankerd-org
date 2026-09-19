@@ -110,7 +110,7 @@ const [featuredPost, ...morePosts] = posts;
                                 alt={photo.data.alt}
                                 widths={[400, 800, 1200]}
                                 sizes="(max-width: 720px) 100vw, (min-width: 720px) calc(66vw - 130px), 50vw"
-                                loading={i < 3 ? 'eager' : 'lazy'}
+                                loading="lazy"
                             />
                             <div class="mosaic-overlay">
                                 <span class="mosaic-title">
