@@ -87,7 +87,7 @@ const [featured, ...rest] = posts;
 	.post-feature {
 		position: relative;
 		display: block;
-		border-radius: 16px;
+		border-radius: 12px;
 		overflow: hidden;
 		height: 480px;
 		text-decoration: none;
@@ -104,12 +104,11 @@ const [featured, ...rest] = posts;
 		transition: transform 0.5s ease;
 	}
 	.post-feature__img--empty { background: var(--bg-alt); }
-	.post-feature:hover .post-feature__img { transform: scale(1.03); }
 	.post-feature__body {
 		position: absolute;
 		bottom: 0; left: 0; right: 0;
 		padding: 2.5em 2em 2em;
-		background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);
+		background: rgba(15, 21, 25, 0.82);
 		display: flex;
 		flex-direction: column;
 		gap: 0.4em;
@@ -167,12 +166,11 @@ const [featured, ...rest] = posts;
 		transition: transform 0.5s ease;
 	}
 	.post-card__img--empty { background: var(--bg-alt); }
-	.post-card:hover .post-card__img { transform: scale(1.04); }
 	.post-card__overlay {
 		position: absolute;
 		bottom: 0; left: 0; right: 0;
 		padding: 1.5em 1.1em 1em;
-		background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.4) 55%, transparent 100%);
+		background: rgba(15, 21, 25, 0.82);
 		display: flex;
 		flex-direction: column;
 		gap: 0.25em;

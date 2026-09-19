@@ -13,14 +13,6 @@ const { class: className } = Astro.props;
 	role="img"
 	aria-label="ankerd"
 >
-	<defs>
-		<linearGradient id="ankerd-gradient" x1="0" y1="0" x2="1" y2="0">
-			<stop offset="0%" stop-color="#0EA5E9"></stop>
-			<stop offset="33%" stop-color="#38BDF8"></stop>
-			<stop offset="66%" stop-color="#7DD3FC"></stop>
-			<stop offset="100%" stop-color="#BAE6FD"></stop>
-		</linearGradient>
-	</defs>
 	<text
 		x="0"
 		y="24"
@@ -28,6 +20,6 @@ const { class: className } = Astro.props;
 		font-size="26"
 		font-weight="700"
 		letter-spacing="0.5"
-		fill="url(#ankerd-gradient)">ankerd</text
+		style="fill: var(--accent)">ankerd</text
 	>
 </svg>

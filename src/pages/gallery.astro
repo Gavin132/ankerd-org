@@ -110,7 +110,7 @@ const photosFull = await Promise.all(
 		display: flex;
 		gap: 0.35em;
 		background: var(--bg-alt);
-		border: 1px solid var(--border);
+		border: 1.5px solid var(--border);
 		border-radius: 8px;
 		padding: 0.25em;
 	}
@@ -130,7 +130,7 @@ const photosFull = await Promise.all(
 	.layout-btn.active {
 		background: var(--bg);
 		color: var(--accent);
-		box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+		box-shadow: 0 0 0 1.5px var(--outline);
 	}
 	.layout-btn:hover:not(.active) { color: var(--text); }
 
@@ -159,15 +159,15 @@ const photosFull = await Promise.all(
 		flex: 0 0 42%;
 		aspect-ratio: 16 / 10;
 		overflow: hidden;
-		border-radius: 14px;
+		border-radius: 12px;
 		position: relative;
 	}
 	.stack-img::after {
 		content: '';
 		position: absolute;
 		inset: 0;
-		background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 50%);
-		border-radius: 14px;
+		background: rgba(15, 21, 25, 0.2);
+		border-radius: 12px;
 		opacity: 0;
 		transition: opacity 0.4s ease;
 	}
@@ -178,10 +178,9 @@ const photosFull = await Promise.all(
 		height: 100%;
 		object-fit: cover;
 		aspect-ratio: unset;
-		border-radius: 14px;
+		border-radius: 12px;
 		transition: transform 0.5s ease;
 	}
-	.stack-item:hover .stack-img img { transform: scale(1.03); }
 
 	.stack-info {
 		flex: 1;
@@ -233,12 +232,11 @@ const photosFull = await Promise.all(
 		padding: 1em;
 		background: var(--bg-alt);
 		color: var(--text);
-		border: 1px solid var(--border);
+		border: 1.5px solid var(--border);
 		border-radius: 12px;
 	}
 	dialog::backdrop {
 		background: rgba(4, 8, 16, 0.75);
-		backdrop-filter: blur(4px);
 	}
 	dialog img {
 		display: block;
@@ -253,7 +251,7 @@ const photosFull = await Promise.all(
 		right: 0.5em;
 		padding: 0 0.35em;
 		background: var(--bg);
-		border: 1px solid var(--border);
+		border: 1.5px solid var(--border);
 		border-radius: 8px;
 		color: var(--text);
 		font-size: 1.25em;

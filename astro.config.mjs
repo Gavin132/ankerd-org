@@ -32,5 +32,21 @@ export default defineConfig({
 			styles: ['normal'],
 			fallbacks: ['sans-serif'],
 		},
+		{
+			provider: fontProviders.fontsource(),
+			name: 'Big Shoulders Display',
+			cssVariable: '--font-display',
+			weights: [700, 800],
+			styles: ['normal'],
+			fallbacks: ['Arial Narrow', 'Impact', 'sans-serif'],
+		},
+		{
+			provider: fontProviders.fontsource(),
+			name: 'Spline Sans Mono',
+			cssVariable: '--font-mono',
+			weights: [400, 500, 600],
+			styles: ['normal'],
+			fallbacks: ['ui-monospace', 'Consolas', 'monospace'],
+		},
 	],
 });

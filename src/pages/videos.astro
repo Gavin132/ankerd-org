@@ -2,7 +2,7 @@
 import VideoCard from '../components/VideoCard.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE_TITLE } from '../consts';
-import { getRecentVideos } from '../lib/youtube';
+import { descriptionExcerpt, getRecentVideos } from '../lib/youtube';
 
 const allVideos = await getRecentVideos();
 const videos = allVideos?.filter((v) => !v.isShort) ?? null;
@@ -17,6 +17,9 @@ const shorts = allVideos?.filter((v) => v.isShort) ?? [];
 				{videos.map((video, i) => (
 					<div class:list={{ featured: i === 0 }}>
 						<VideoCard video={video} loading={i < 6 ? 'eager' : 'lazy'} />
+						{i === 0 && descriptionExcerpt(video.description) && (
+							<p class="featured-desc">{descriptionExcerpt(video.description)}</p>
+						)}
 					</div>
 				))}
 			</div>
@@ -62,6 +65,13 @@ const shorts = allVideos?.filter((v) => v.isShort) ?? [];
 	.featured {
 		grid-column: span 2;
 		grid-row: span 2;
+	}
+	.featured-desc {
+		margin: 0.6em 0 0;
+		max-width: 60ch;
+		color: var(--text-faint);
+		font-size: 0.8em;
+		line-height: 1.6;
 	}
 	@media (max-width: 640px) {
 		.featured {

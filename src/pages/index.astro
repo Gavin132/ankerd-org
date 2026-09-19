@@ -233,14 +233,8 @@ const [featuredPost, ...morePosts] = posts;
         margin: 0 0 0.75em;
     }
     .hero h1 {
-        font-size: 2.6em;
-        line-height: 1.15;
-        letter-spacing: -0.02em;
-        margin: 0 0 0.6em;
-        background: var(--gradient-brand);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
+        font-size: 3.4em;
+        margin: 0 0 0.35em;
     }
     .hero-desc {
         color: var(--text-muted);
@@ -257,43 +251,39 @@ const [featuredPost, ...morePosts] = posts;
     .btn-primary {
         display: inline-block;
         padding: 0.55em 1.4em;
-        background: var(--accent);
-        color: var(--bg);
-        border-radius: 8px;
+        background: var(--brand);
+        color: var(--on-brand);
+        border: 2px solid var(--outline);
+        border-radius: 10px;
         font-size: 0.9em;
         font-weight: 600;
         text-decoration: none;
-        transition:
-            background 0.2s ease,
-            transform 0.15s ease;
     }
     .btn-primary:hover {
-        background: var(--accent-hover);
-        color: var(--bg);
-        transform: translateY(-1px);
+        color: var(--on-brand);
+        opacity: 0.9;
     }
     .btn-ghost {
         display: inline-block;
         padding: 0.55em 1.4em;
-        border: 1px solid var(--border);
-        border-radius: 8px;
+        background: var(--bg-alt);
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
         font-size: 0.9em;
+        font-weight: 600;
         text-decoration: none;
-        color: var(--text-muted);
-        transition:
-            border-color 0.2s ease,
-            color 0.2s ease;
+        color: var(--text);
     }
     .btn-ghost:hover {
-        border-color: var(--accent);
-        color: var(--accent);
+        border-color: var(--text-faint);
+        color: var(--text);
     }
     .hero-image {
-        border-radius: 16px;
+        border-radius: 12px;
         overflow: hidden;
         aspect-ratio: 16 / 9;
         background: var(--bg-alt);
-        border: 1px solid var(--border);
+        border: 1.5px solid var(--border);
         position: relative;
     }
     .video-thumb-link {
@@ -311,11 +301,10 @@ const [featuredPost, ...morePosts] = posts;
         border-radius: 0;
         transition: transform 0.4s ease;
     }
-    .video-thumb-link:hover .video-thumb-img { transform: scale(1.03); }
     .video-thumb-overlay {
         position: absolute;
         inset: 0;
-        background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%);
+        background: rgba(15, 21, 25, 0.2);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -330,13 +319,11 @@ const [featuredPost, ...morePosts] = posts;
         align-items: center;
         justify-content: center;
         color: #fff;
-        backdrop-filter: blur(4px);
         transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
     }
     .video-thumb-link:hover .play-circle {
         background: var(--accent);
         border-color: var(--accent);
-        transform: scale(1.1);
     }
     .video-thumb-title {
         position: absolute;
@@ -464,20 +451,19 @@ const [featuredPost, ...morePosts] = posts;
         display: block;
         transition: transform 0.5s ease;
     }
+    .mosaic-item:hover .mosaic-overlay {
+        opacity: 1;
+    }
     .mosaic-item:hover img {
-        transform: scale(1.06);
     }
 
     .mosaic-overlay {
         position: absolute;
         inset: 0;
-        /* always-on subtle gradient; label fades in on hover */
-        background: linear-gradient(
-            to top,
-            rgba(0, 0, 0, 0.6) 0%,
-            rgba(0, 0, 0, 0.1) 40%,
-            transparent 70%
-        );
+        /* flat dark overlay, shown on hover together with the label */
+        background: rgba(15, 21, 25, 0.6);
+        opacity: 0;
+        transition: opacity 0.25s ease;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
@@ -521,7 +507,7 @@ const [featuredPost, ...morePosts] = posts;
     .blog-feature {
         position: relative;
         display: block;
-        border-radius: 16px;
+        border-radius: 12px;
         overflow: hidden;
         height: 440px;
         text-decoration: none;
@@ -540,7 +526,6 @@ const [featuredPost, ...morePosts] = posts;
         background: var(--bg-alt);
     }
     .blog-feature:hover .blog-feature__img {
-        transform: scale(1.03);
     }
     .blog-feature__body {
         position: absolute;
@@ -548,12 +533,7 @@ const [featuredPost, ...morePosts] = posts;
         left: 0;
         right: 0;
         padding: 2.5em 2em 2em;
-        background: linear-gradient(
-            to top,
-            rgba(0, 0, 0, 0.88) 0%,
-            rgba(0, 0, 0, 0.5) 50%,
-            transparent 100%
-        );
+        background: rgba(15, 21, 25, 0.82);
         display: flex;
         flex-direction: column;
         gap: 0.4em;
@@ -614,7 +594,6 @@ const [featuredPost, ...morePosts] = posts;
         background: var(--bg-alt);
     }
     .blog-card:hover .blog-card__img {
-        transform: scale(1.04);
     }
     .blog-card__overlay {
         position: absolute;
@@ -622,7 +601,7 @@ const [featuredPost, ...morePosts] = posts;
         left: 0;
         right: 0;
         padding: 1.5em 1.1em 1em;
-        background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.4) 55%, transparent 100%);
+        background: rgba(15, 21, 25, 0.82);
         display: flex;
         flex-direction: column;
         gap: 0.25em;
@@ -667,10 +646,10 @@ const [featuredPost, ...morePosts] = posts;
     }
     .about-img-wrap {
         margin: 0;
-        border-radius: 16px;
+        border-radius: 12px;
         overflow: hidden;
         background: var(--bg-alt);
-        border: 1px solid var(--border);
+        border: 1.5px solid var(--border);
     }
     .about-img-wrap img {
         display: block;
