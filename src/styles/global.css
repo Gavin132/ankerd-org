@@ -196,11 +196,14 @@ hr {
         flex-direction: column;
         font-size: 17px;
     }
-    main {
-        padding: 1.5em 1em calc(72px + 1.5em);
-    }
+    main,
     main.wide {
-        padding: 1.5em 1em calc(72px + 1.5em);
+        padding: 1.5em 1em;
+    }
+    /* Clear the fixed bottom nav below the footer, not just below main,
+       so the footer isn't hidden behind it. */
+    .page {
+        padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
     }
 }
 

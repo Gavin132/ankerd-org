@@ -101,6 +101,12 @@ const photosFull = await Promise.all(
 		gap: 1em;
 		margin-bottom: 2em;
 	}
+	/* Keep the layout toggle clear of the fixed theme button (top-right on desktop). */
+	@media (min-width: 721px) {
+		.gallery-header {
+			padding-right: 1.5rem;
+		}
+	}
 	h1 {
 		font-size: 2.441em;
 		margin: 0;

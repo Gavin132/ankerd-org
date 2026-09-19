@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'astro-icon/components';
+
 interface Props {
   type?: 'info' | 'tip' | 'warning' | 'danger';
   title?: string;
@@ -7,27 +9,35 @@ interface Props {
 const { type = 'info', title } = Astro.props;
 
 const icons = {
-  info: 'ℹ️',
-  tip: '💡',
-  warning: '⚠️',
-  danger: '🚨',
+  info: 'lucide:info',
+  tip: 'lucide:lightbulb',
+  warning: 'lucide:triangle-alert',
+  danger: 'lucide:octagon-alert',
 };
 ---
 
 <aside class={`callout callout-${type}`}>
   <p class="callout-title">
-    <span class="callout-icon">{icons[type]}</span>
+    <Icon name={icons[type]} width="18" height="18" aria-hidden="true" />
     {title ?? type.charAt(0).toUpperCase() + type.slice(1)}
   </p>
   <slot />
 </aside>
 
 <style>
+  /* Same notice box as the Con app: tinted fill, 1.5px tinted border, flat.
+     Info uses the brand blue; the other three are the app's status colours
+     (emerald / amber / rose), which are only ever used for status. */
   .callout {
-    border-left: 4px solid;
-    border-radius: 0 8px 8px 0;
+    border: 1.5px solid var(--callout-border);
+    border-radius: 10px;
+    background: var(--callout-bg);
+    color: var(--text);
     padding: 1rem 1.25rem;
     margin: 1.5rem 0;
+  }
+  .callout > :global(:last-child) {
+    margin-bottom: 0;
   }
   .callout-title {
     font-weight: 700;
@@ -35,16 +45,16 @@ const icons = {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    text-transform: capitalize;
+    color: var(--callout-fg);
   }
-  .callout-icon { font-style: normal; }
-  .callout-info    { border-color: #3b82f6; background: #eff6ff; color: #1e3a5f; }
-  .callout-tip     { border-color: #22c55e; background: #f0fdf4; color: #14532d; }
-  .callout-warning { border-color: #f59e0b; background: #fffbeb; color: #78350f; }
-  .callout-danger  { border-color: #ef4444; background: #fef2f2; color: #7f1d1d; }
 
-  :global([data-theme='dark']) .callout-info    { background: #1e3a5f33; color: #93c5fd; }
-  :global([data-theme='dark']) .callout-tip     { background: #14532d33; color: #86efac; }
-  :global([data-theme='dark']) .callout-warning { background: #78350f33; color: #fcd34d; }
-  :global([data-theme='dark']) .callout-danger  { background: #7f1d1d33; color: #fca5a5; }
+  .callout-info    { --callout-bg: var(--brand-soft); --callout-border: #97d0fc; --callout-fg: var(--accent); }
+  .callout-tip     { --callout-bg: #ecfdf5; --callout-border: #a7f3d0; --callout-fg: #047857; }
+  .callout-warning { --callout-bg: #fffbeb; --callout-border: #fde68a; --callout-fg: #b45309; }
+  .callout-danger  { --callout-bg: #fff1f2; --callout-border: #fecdd3; --callout-fg: #be123c; }
+
+  :global([data-theme='dark']) .callout-info    { --callout-border: rgb(87 178 249 / 0.3); }
+  :global([data-theme='dark']) .callout-tip     { --callout-bg: rgb(16 185 129 / 0.1); --callout-border: rgb(52 211 153 / 0.3); --callout-fg: #6ee7b7; }
+  :global([data-theme='dark']) .callout-warning { --callout-bg: rgb(245 158 11 / 0.1); --callout-border: rgb(251 191 36 / 0.3); --callout-fg: #fcd34d; }
+  :global([data-theme='dark']) .callout-danger  { --callout-bg: rgb(244 63 94 / 0.1); --callout-border: rgb(251 113 133 / 0.3); --callout-fg: #fda4af; }
 </style>
