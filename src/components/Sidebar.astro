@@ -24,6 +24,7 @@ const socialIconMap: Record<string, string> = {
         <HeaderLink href="/videos">Videos</HeaderLink>
         <HeaderLink href="/gallery">Gallery</HeaderLink>
         <HeaderLink href="/blog">Blog</HeaderLink>
+        <HeaderLink href="/contact">Contact</HeaderLink>
     </nav>
     <div class="sidebar-bottom">
         <div class="social-links">
@@ -59,6 +60,10 @@ const socialIconMap: Record<string, string> = {
         <Icon name="lucide:book-open" width="22" height="22" aria-hidden="true" />
         <span>Blog</span>
     </a>
+    <a href="/contact" class="mobile-nav__item">
+        <Icon name="lucide:mail" width="22" height="22" aria-hidden="true" />
+        <span>Contact</span>
+    </a>
 </nav>
 
 <style>
@@ -75,7 +80,7 @@ const socialIconMap: Record<string, string> = {
         gap: 2em;
         padding: 1.5em 1.25em;
         background: var(--bg-alt);
-        border-right: 1px solid var(--border);
+        border-right: 1.5px solid var(--border);
     }
     .sidebar-top {
         display: flex;
@@ -136,7 +141,7 @@ const socialIconMap: Record<string, string> = {
             right: 0;
             z-index: 100;
             background: var(--bg-alt);
-            border-top: 1px solid var(--border);
+            border-top: 1.5px solid var(--border);
             padding: 0 0.5em env(safe-area-inset-bottom, 0);
         }
 

@@ -56,10 +56,12 @@ const meta = [camera, lens, settings].filter(Boolean).join(' · ');
 		aspect-ratio: 4 / 3;
 		object-fit: cover;
 		border-radius: 12px;
-		transition: box-shadow 0.2s ease;
+		border: 1.5px solid var(--border);
+		box-sizing: border-box;
+		transition: border-color 0.15s ease;
 	}
 	.gallery-card:hover img {
-		box-shadow: var(--shadow);
+		border-color: var(--text-faint);
 	}
 	.caption {
 		display: flex;

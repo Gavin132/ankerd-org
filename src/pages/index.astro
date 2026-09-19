@@ -4,6 +4,7 @@ import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import FormattedDate from "../components/FormattedDate.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import membersPhoto from "../assets/members.webp";
 import { getRecentVideos } from "../lib/youtube";
 
 const posts = (await getCollection("blog"))
@@ -56,15 +57,15 @@ const [featuredPost, ...morePosts] = posts;
         </div>
 
         <div class="hero-text" data-animate data-delay="2">
-            <h1>A place for writing, film, and photography.</h1>
+            <h1>Convention videos, made for fun.</h1>
             <p class="hero-desc">
-                ankerd is a creative collective capturing stories through words,
-                video, and images. Explore original writing, documentary-style
-                film, and photography from around the world.
+                We make videos here at ankerd about anime conventions in the
+                Netherlands. We don't really make random vlogs, just some goofy
+                videos about conventions.
             </p>
             <div class="hero-ctas">
-                <a href="/blog" class="btn-primary">Read the blog</a>
-                <a href="/gallery" class="btn-ghost">View gallery →</a>
+                <a href="/videos" class="btn-primary">Watch the videos</a>
+                <a href="/blog" class="btn-ghost">Read the blog →</a>
             </div>
         </div>
     </section>
@@ -74,15 +75,15 @@ const [featuredPost, ...morePosts] = posts;
         <div class="about-inner">
             <div class="about-body">
                 <div class="section-label" style="margin-bottom: 1.25em;">About ankerd</div>
-                <p class="about-lead">ankerd is a creative collective for writing, film, and photography — capturing stories from around the world.</p>
-                <p class="about-text">This is placeholder copy — replace it with your own introduction: who you are, what you make videos about, what you like to photograph, and what people can expect to find here.</p>
+                <p class="about-lead">Ankerd was founded by gavin132_ back in December of 2021.</p>
+                <p class="about-text">He actually just wanted a proper domain name so he could make websites, it quickly grew however to a pretty sizeable community. Then again, this website is still just one giant hobby project hosted and maintained by @gavin132_.</p>
+                <p class="about-text">We're basically a bunch of morons making videos at conventions. 99% of the people in our videos have some kind of connection to the ankerd group. The only place where you'll find strangers is in the photo collage at the end of every video.</p>
+                <p class="about-text"><em>"I simply enjoy the whole process of making a video, from filming to editing. It's a creative outlet for me of some sorts. I'm not aiming for a video that is professionally filmed &amp; edited or anything like that. So please don't take it too seriously." — gavin132_</em></p>
             </div>
-            <div class="about-img-wrap">
-                <div class="about-img-placeholder">
-                    <Icon name="lucide:image" width="40" height="40" aria-hidden="true" />
-                    <p>Your photo here</p>
-                </div>
-            </div>
+            <figure class="about-img-wrap">
+                <Image src={membersPhoto} alt="A few members of ankerd" widths={[500, 800, 1200]} sizes="(max-width: 780px) 100vw, 45vw" />
+                <figcaption>A few members of ankerd</figcaption>
+            </figure>
         </div>
     </section>
 
@@ -232,14 +233,8 @@ const [featuredPost, ...morePosts] = posts;
         margin: 0 0 0.75em;
     }
     .hero h1 {
-        font-size: 2.6em;
-        line-height: 1.15;
-        letter-spacing: -0.02em;
-        margin: 0 0 0.6em;
-        background: var(--gradient-brand);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
+        font-size: 3.4em;
+        margin: 0 0 0.35em;
     }
     .hero-desc {
         color: var(--text-muted);
@@ -256,43 +251,39 @@ const [featuredPost, ...morePosts] = posts;
     .btn-primary {
         display: inline-block;
         padding: 0.55em 1.4em;
-        background: var(--accent);
-        color: var(--bg);
-        border-radius: 8px;
+        background: var(--brand);
+        color: var(--on-brand);
+        border: 2px solid var(--outline);
+        border-radius: 10px;
         font-size: 0.9em;
         font-weight: 600;
         text-decoration: none;
-        transition:
-            background 0.2s ease,
-            transform 0.15s ease;
     }
     .btn-primary:hover {
-        background: var(--accent-hover);
-        color: var(--bg);
-        transform: translateY(-1px);
+        color: var(--on-brand);
+        opacity: 0.9;
     }
     .btn-ghost {
         display: inline-block;
         padding: 0.55em 1.4em;
-        border: 1px solid var(--border);
-        border-radius: 8px;
+        background: var(--bg-alt);
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
         font-size: 0.9em;
+        font-weight: 600;
         text-decoration: none;
-        color: var(--text-muted);
-        transition:
-            border-color 0.2s ease,
-            color 0.2s ease;
+        color: var(--text);
     }
     .btn-ghost:hover {
-        border-color: var(--accent);
-        color: var(--accent);
+        border-color: var(--text-faint);
+        color: var(--text);
     }
     .hero-image {
-        border-radius: 16px;
+        border-radius: 12px;
         overflow: hidden;
         aspect-ratio: 16 / 9;
         background: var(--bg-alt);
-        border: 1px solid var(--border);
+        border: 1.5px solid var(--border);
         position: relative;
     }
     .video-thumb-link {
@@ -310,11 +301,10 @@ const [featuredPost, ...morePosts] = posts;
         border-radius: 0;
         transition: transform 0.4s ease;
     }
-    .video-thumb-link:hover .video-thumb-img { transform: scale(1.03); }
     .video-thumb-overlay {
         position: absolute;
         inset: 0;
-        background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%);
+        background: rgba(15, 21, 25, 0.2);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -329,13 +319,11 @@ const [featuredPost, ...morePosts] = posts;
         align-items: center;
         justify-content: center;
         color: #fff;
-        backdrop-filter: blur(4px);
         transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
     }
     .video-thumb-link:hover .play-circle {
         background: var(--accent);
         border-color: var(--accent);
-        transform: scale(1.1);
     }
     .video-thumb-title {
         position: absolute;
@@ -463,20 +451,19 @@ const [featuredPost, ...morePosts] = posts;
         display: block;
         transition: transform 0.5s ease;
     }
+    .mosaic-item:hover .mosaic-overlay {
+        opacity: 1;
+    }
     .mosaic-item:hover img {
-        transform: scale(1.06);
     }
 
     .mosaic-overlay {
         position: absolute;
         inset: 0;
-        /* always-on subtle gradient; label fades in on hover */
-        background: linear-gradient(
-            to top,
-            rgba(0, 0, 0, 0.6) 0%,
-            rgba(0, 0, 0, 0.1) 40%,
-            transparent 70%
-        );
+        /* flat dark overlay, shown on hover together with the label */
+        background: rgba(15, 21, 25, 0.6);
+        opacity: 0;
+        transition: opacity 0.25s ease;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
@@ -520,7 +507,7 @@ const [featuredPost, ...morePosts] = posts;
     .blog-feature {
         position: relative;
         display: block;
-        border-radius: 16px;
+        border-radius: 12px;
         overflow: hidden;
         height: 440px;
         text-decoration: none;
@@ -539,7 +526,6 @@ const [featuredPost, ...morePosts] = posts;
         background: var(--bg-alt);
     }
     .blog-feature:hover .blog-feature__img {
-        transform: scale(1.03);
     }
     .blog-feature__body {
         position: absolute;
@@ -547,12 +533,7 @@ const [featuredPost, ...morePosts] = posts;
         left: 0;
         right: 0;
         padding: 2.5em 2em 2em;
-        background: linear-gradient(
-            to top,
-            rgba(0, 0, 0, 0.88) 0%,
-            rgba(0, 0, 0, 0.5) 50%,
-            transparent 100%
-        );
+        background: rgba(15, 21, 25, 0.82);
         display: flex;
         flex-direction: column;
         gap: 0.4em;
@@ -613,7 +594,6 @@ const [featuredPost, ...morePosts] = posts;
         background: var(--bg-alt);
     }
     .blog-card:hover .blog-card__img {
-        transform: scale(1.04);
     }
     .blog-card__overlay {
         position: absolute;
@@ -621,7 +601,7 @@ const [featuredPost, ...morePosts] = posts;
         left: 0;
         right: 0;
         padding: 1.5em 1.1em 1em;
-        background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.4) 55%, transparent 100%);
+        background: rgba(15, 21, 25, 0.82);
         display: flex;
         flex-direction: column;
         gap: 0.25em;
@@ -665,30 +645,23 @@ const [featuredPost, ...morePosts] = posts;
         margin: 0;
     }
     .about-img-wrap {
-        border-radius: 16px;
-        overflow: hidden;
-        aspect-ratio: 4 / 3;
-        background: var(--bg-alt);
-        border: 1px solid var(--border);
-    }
-    .about-img-placeholder {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 0.75em;
-        color: var(--text-muted);
-        opacity: 0.45;
-    }
-    .about-img-placeholder p {
-        font-size: 0.8em;
         margin: 0;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
+        border-radius: 12px;
+        overflow: hidden;
+        background: var(--bg-alt);
+        border: 1.5px solid var(--border);
     }
-
+    .about-img-wrap img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+    }
+    .about-img-wrap figcaption {
+        padding: 0.6em 1em;
+        font-size: 0.8em;
+        color: var(--text-muted);
+    }
     /* ── Responsive ─────────────────────────────────────── */
     @media (max-width: 780px) {
         .about-inner {

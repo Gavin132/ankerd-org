@@ -3,6 +3,7 @@ import { YOUTUBE_CHANNEL_ID } from '../consts';
 export interface Video {
 	id: string;
 	title: string;
+	description: string;
 	publishedAt: Date;
 	thumbnail: string;
 	url: string;
@@ -16,12 +17,28 @@ interface Thumbnail {
 interface PlaylistItem {
 	snippet?: {
 		title?: string;
+		description?: string;
 		publishedAt?: string;
 		resourceId?: { videoId?: string };
 		thumbnails?: Partial<
 			Record<'maxres' | 'standard' | 'high' | 'medium' | 'default', Thumbnail>
 		>;
 	};
+}
+
+/**
+ * A short plain-text teaser from a YouTube description: the first paragraph,
+ * without links and hashtags, cut at a word boundary.
+ */
+export function descriptionExcerpt(description: string, maxLength = 200): string {
+	const firstParagraph = description.trim().split(/\n\s*\n/)[0] ?? '';
+	const text = firstParagraph
+		.replace(/https?:\/\/\S+/g, '')
+		.replace(/#\S+/g, '')
+		.replace(/\s+/g, ' ')
+		.trim();
+	if (text.length <= maxLength) return text;
+	return text.slice(0, maxLength).replace(/\s+\S*$/, '') + '…';
 }
 
 const API_BASE = 'https://www.googleapis.com/youtube/v3';
@@ -126,6 +143,7 @@ export async function getRecentVideos(limit?: number): Promise<Video[] | null> {
 			return {
 				id: videoId,
 				title: snippet.title ?? '',
+				description: snippet.description ?? '',
 				publishedAt: new Date(snippet.publishedAt ?? 0),
 				thumbnail: thumbnail?.url ?? '',
 				url: `https://www.youtube.com/watch?v=${videoId}`,
