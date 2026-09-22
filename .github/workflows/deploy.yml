@@ -15,15 +15,21 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  # Never cancel a deploy that is already talking to the Pages API.
+  cancel-in-progress: false
+
+env:
+  # Re-runs keep the previous attempt's artifact, and deploy-pages refuses to
+  # pick between two artifacts of the same name, so scope the name per attempt.
+  ARTIFACT_NAME: github-pages-${{ github.run_attempt }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: pnpm
@@ -31,8 +37,9 @@ jobs:
       - run: pnpm build
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
+          name: ${{ env.ARTIFACT_NAME }}
           path: dist
 
   deploy:
@@ -43,4 +50,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
+        with:
+          artifact_name: ${{ env.ARTIFACT_NAME }}
