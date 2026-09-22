@@ -5,7 +5,10 @@ const today = new Date();
 ---
 
 <footer>
-	<span>&copy; {today.getFullYear()} {SITE_TITLE}</span>
+	<span>
+		&copy; {today.getFullYear()} {SITE_TITLE}&trade; &middot; site by{' '}
+		<a class="credit" href="https://rg-digital.dev/" target="_blank" rel="noopener">RG Digital</a>
+	</span>
 	<span class="links">
 		<a href="/rss.xml">RSS</a>
 		{
@@ -40,5 +43,11 @@ const today = new Date();
 	}
 	a:hover {
 		color: var(--accent);
+	}
+	/* Underlined so it still reads as a link mid-sentence. */
+	.credit {
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.2em;
 	}
 </style>
